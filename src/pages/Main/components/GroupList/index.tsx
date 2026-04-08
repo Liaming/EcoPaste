@@ -54,6 +54,28 @@ const GroupList = () => {
     rootState.group = presetGroups[nextIndex].id;
   });
 
+  useKeyPress(["leftarrow", "rightarrow"], (event) => {
+    const active = document.activeElement;
+    if (
+      active?.tagName === "INPUT" &&
+      (active as HTMLInputElement).value !== ""
+    )
+      return;
+
+    const index = presetGroups.findIndex((item) => item.id === rootState.group);
+    const length = presetGroups.length;
+    const nextIndex =
+      event.key === "ArrowLeft"
+        ? index === 0
+          ? length - 1
+          : index - 1
+        : index === length - 1
+          ? 0
+          : index + 1;
+
+    rootState.group = presetGroups[nextIndex].id;
+  });
+
   return (
     <Scrollbar className="flex" data-tauri-drag-region>
       {presetGroups.map((item) => {
